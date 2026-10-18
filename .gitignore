@@ -1,0 +1,10 @@
+logs/*
+!logs/.gitkeep
+.env
+.env.*
+*.pem
+*.key
+credentials*
+secrets*
+.DS_Store
+*.swp
