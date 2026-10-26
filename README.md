@@ -19,7 +19,7 @@ FieldKit is a modular, menu-driven personal Linux toolkit for rebuilding a learn
 - Privacy & Browser Tools
 
 ## Requirements and supported systems
-Bash 4+, Linux with `/etc/os-release`, and `sudo` for system changes. Package backends: APT (Debian/Ubuntu family), DNF (Fedora/RHEL family), Pacman (Arch family), and Zypper (openSUSE). Automatic detection is the default; manual override is available. Package names and availability differ by distribution. Metasploit and Burp Suite use their official interactive installers after an FYI and confirmation. Proton VPN uses the official Debian/Ubuntu repository package and verifies its published SHA-256 before installing. BloodHound CE needs Docker and at least 8 GB RAM; FieldKit does not silently install Docker as a hidden dependency, and this project’s older target PC is below the official memory minimum.
+Bash 4+, Linux with `/etc/os-release`, and `sudo` for system changes. Package backends: APT (Debian/Ubuntu family), DNF (Fedora/RHEL family), Pacman (Arch family), and Zypper (openSUSE). Automatic detection is the default; manual override is available. Package names and availability differ by distribution. Metasploit Framework uses Rapid7's official APT package setup script on Debian/Ubuntu after confirmation; Burp Suite uses the official PortSwigger interactive installer. Proton VPN uses the official Debian/Ubuntu repository package and verifies its published SHA-256 before installing. BloodHound CE needs Docker and at least 8 GB RAM; FieldKit does not silently install Docker as a hidden dependency, and this project’s older target PC is below the official memory minimum.
 
 ## Run
 ```bash
@@ -30,7 +30,7 @@ chmod +x fieldkit.sh
 ```
 
 ## Special installers
-- **Metasploit:** downloads and launches the official Rapid7 Linux installer after confirmation.
+- **Metasploit Framework:** on Debian/Ubuntu x86_64, downloads the official `msfinstall` setup script from Rapid7's Metasploit Framework repository and runs it after confirmation. This configures the official APT package source and installs the CLI framework with its dependencies. It does **not** use the Metasploit Pro `.run` installer. It is package-managed, but the source is Rapid7's repository, not Ubuntu's default archive. Other Linux families receive official instructions only.
 - **Burp Suite:** downloads and launches the official PortSwigger Linux installer after confirmation; choose Community Edition.
 - **Proton VPN:** supported automated path is Debian/Ubuntu; verifies the official repository package checksum before adding it and installing the GUI package. Lubuntu integration may need extra configuration.
 - **BloodHound CE:** requires a container runtime and at least 8 GB RAM according to upstream documentation. FieldKit displays this requirement rather than pretending it can complete installation on under-spec hardware.

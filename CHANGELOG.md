@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.4.1
+- Changed Metasploit installation from the Metasploit Pro `.run` installer to the official Metasploit Framework package setup script for Debian/Ubuntu x86_64.
+- Added explicit messaging distinguishing Framework CLI from Metasploit Pro and improved launcher verification.
+- Removed bundled runtime log from the release archive.
+
 ## 0.4.0
 - Added explicit installers for Metasploit, Burp Suite Community, and Proton VPN (Debian/Ubuntu).
 - Added pre-install FYI prompts for tools that may already exist.

@@ -12,7 +12,7 @@ mkdir -p "$ROOT/logs"
 detect_os
 while true; do
   clear 2>/dev/null || true
-  printf '=== FIELDKIT 0.4.0 ===\n\nOS: %s | Backend: %s\n\n' "$OS_PRETTY" "$PKG_FAMILY"
+  printf '=== FIELDKIT 0.4.1 ===\n\nOS: %s | Backend: %s\n\n' "$OS_PRETTY" "$PKG_FAMILY"
   printf '1) Install Tools\n2) Payloads & Scripts\n3) Documentation\n4) Study & Practice\n5) System & Updates\n\nQ) Quit\n'
   read -r -p 'Choose: ' c
   case "$c" in

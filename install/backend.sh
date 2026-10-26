@@ -19,19 +19,34 @@ install_special_tool(){
  local key="$1" tmp url rc mem_kb
  case "$key" in
   metasploit)
-   [[ "$(uname -m)" == x86_64 ]] || { echo 'The official Linux installer currently targets x86_64 systems.'; return 1; }
-   echo 'FYI: If Metasploit is already installed, cancel and check it first. Continuing may install or update a separate copy.'
-   confirm 'Download and run the official Rapid7 Metasploit installer?' || return 1
+   [[ "$PKG_FAMILY" == debian ]] || {
+    echo 'Automated Metasploit Framework installation is currently configured for Debian/Ubuntu only.'
+    echo 'Use the official Framework package instructions for other distributions: https://docs.metasploit.com/docs/using-metasploit/getting-started/nightly-installers.html'
+    return 1
+   }
+   [[ "$(uname -m)" == x86_64 ]] || { echo 'The automated Framework package path is configured for x86_64 Linux.'; return 1; }
+   echo 'FYI: This installs Metasploit Framework (CLI), NOT the Metasploit Pro web platform.'
+   echo 'It configures Rapid7 official APT packaging and installs the framework with required dependencies.'
+   echo 'It does not use the Pro installer that creates /opt/metasploit and its extra web services.'
+   echo 'If you already have a working msfconsole, cancel and check it first.'
+   confirm 'Download and run the official Metasploit Framework package setup script?' || return 1
    tmp="$(mktemp -d)" || return 1
-   url='https://downloads.metasploit.com/data/releases/metasploit-latest-linux-x64-installer.run'
-   if download_file "$url" "$tmp/metasploit-installer.run"; then
-    chmod 700 "$tmp/metasploit-installer.run"
-    echo 'Launching the official Rapid7 installer. Follow its prompts to finish setup.'
-    if (cd "$tmp" && sudo ./metasploit-installer.run); then rc=0; else rc=$?; fi
+   url='https://raw.githubusercontent.com/rapid7/metasploit-omnibus/master/config/templates/metasploit-framework-wrappers/msfupdate.erb'
+   if download_file "$url" "$tmp/msfinstall"; then
+    chmod 700 "$tmp/msfinstall"
+    echo 'Running the official Framework setup script. It will use APT and may ask for sudo authentication.'
+    if bash "$tmp/msfinstall"; then rc=0; else rc=$?; fi
    else rc=1; fi
    rm -rf "$tmp"
    (( rc == 0 )) || return 1
-   command -v msfconsole >/dev/null 2>&1 || [[ -x /opt/metasploit-framework/bin/msfconsole ]] || { echo 'Installer exited, but msfconsole was not found. Check the installer output and install path.'; return 1; }
+   if [[ -x /opt/metasploit-framework/bin/msfconsole ]]; then
+    echo '✓ Found the Framework launcher at /opt/metasploit-framework/bin/msfconsole'
+   elif command -v msfconsole >/dev/null 2>&1 && [[ -x "$(command -v msfconsole)" ]]; then
+    echo '✓ Found executable msfconsole on PATH'
+   else
+    echo 'Installer exited, but FieldKit could not verify an executable msfconsole. Check the setup output.'
+    return 1
+   fi
    ;;
   burpsuite)
    [[ "$(uname -m)" == x86_64 ]] || { echo 'This installer path is for x86_64 Linux. Use the official download page for other architectures.'; return 1; }
